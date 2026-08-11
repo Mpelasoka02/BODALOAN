@@ -1,0 +1,14 @@
+<svg width="200" height="130" viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="38" r="24" stroke="#1B3358" stroke-width="2.2"/>
+  <line x1="100" y1="14" x2="100" y2="22" stroke="#1B3358" stroke-width="1.2" opacity=".3"/>
+  <line x1="100" y1="54" x2="100" y2="62" stroke="#1B3358" stroke-width="1.2" opacity=".3"/>
+  <line x1="76" y1="38" x2="84" y2="38" stroke="#1B3358" stroke-width="1.2" opacity=".3"/>
+  <line x1="116" y1="38" x2="124" y2="38" stroke="#1B3358" stroke-width="1.2" opacity=".3"/>
+  <circle cx="100" cy="38" r="5.5" fill="#1B3358"/>
+  <path d="M78 60L122 16" stroke="#C9962C" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M115 16H122V23" stroke="#C9962C" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="100" y="94" text-anchor="middle" font-family="Inter,system-ui,-apple-system,sans-serif" font-size="28" font-weight="800" letter-spacing="-.5">
+    <tspan fill="#1B3358">Boda</tspan><tspan fill="#C9962C">Loan</tspan>
+  </text>
+  <text x="100" y="116" text-anchor="middle" font-family="Inter,system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" letter-spacing="3" fill="#6B7684">RIDE. REPAY. OWN.</text>
+</svg>

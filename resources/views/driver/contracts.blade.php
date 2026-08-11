@@ -1,0 +1,97 @@
+@extends('layouts.app')
+@section('title', 'My Contracts — BodaLink')
+@section('page-title', 'My Contracts')
+
+@section('content')
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <p class="text-muted mb-0 small">Review and manage your contracts</p>
+    </div>
+</div>
+
+@if(session('success'))
+    <div style="background:#E3F9EF;border:1px solid #A7F3D0;border-radius:10px;padding:14px 18px;margin-bottom:20px;color:#065f46;font-size:0.88rem;">
+        <i class="bi bi-check-circle-fill me-1"></i> {{ session('success') }}
+    </div>
+@endif
+
+@if($loans->count() > 0)
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0" style="font-size:0.85rem;">
+            <thead style="background:var(--page-bg);">
+                <tr>
+                    <th>Contract #</th>
+                    <th>Motorcycle</th>
+                    <th>Owner</th>
+                    <th>Status</th>
+                    <th>Signatures</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($loans as $loan)
+                @php $contract = $loan->contract; @endphp
+                <tr>
+                    <td style="font-weight:700;color:var(--text);">{{ $contract->contract_number ?? '—' }}</td>
+                    <td>
+                        <div style="font-weight:600;">{{ $loan->motorcycle->make }} {{ $loan->motorcycle->model }}</div>
+                        <div style="color:var(--text-secondary);font-size:0.78rem;">{{ $loan->motorcycle->plate_number }}</div>
+                    </td>
+                    <td>{{ $loan->owner->name }}</td>
+                    <td>
+                        @if($contract->status === 'pending')
+                            <span style="background:#FEF3C7;color:#92400E;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;">Pending Owner Approval</span>
+                        @elseif($contract->status === 'approved')
+                            <span style="background:#DBEAFE;color:#1E40AF;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;">Approved — Ready to Sign</span>
+                        @elseif($contract->status === 'partially_signed')
+                            <span style="background:#FEF3C7;color:#92400E;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;">Partially Signed</span>
+                        @elseif($contract->status === 'fully_signed')
+                            <span style="background:#D1FAE5;color:#065F46;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;">Fully Signed — Active</span>
+                        @elseif($contract->status === 'rejected')
+                            <span style="background:#FEE2E2;color:#991B1B;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:600;">Rejected</span>
+                        @endif
+                    </td>
+                    <td style="font-size:0.8rem;">
+                        @if($contract->owner_signed_at)
+                            <span style="color:var(--emerald-600,#059669);"><i class="bi bi-check-circle-fill me-1"></i>Owner</span>
+                        @else
+                            <span style="color:var(--text-secondary);">Owner: Not signed</span>
+                        @endif
+                        <br>
+                        @if($contract->driver_signed_at)
+                            <span style="color:var(--emerald-600,#059669);"><i class="bi bi-check-circle-fill me-1"></i>You</span>
+                        @else
+                            <span style="color:var(--text-secondary);">You: Not signed</span>
+                        @endif
+                    </td>
+                    <td>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <a href="{{ route('contracts.show', $loan) }}" class="btn btn-sm btn-outline-navy" style="padding:5px 12px;font-size:0.78rem;">
+                                <i class="bi bi-eye me-1"></i>View
+                            </a>
+                            <a href="{{ route('contracts.print', $loan) }}" class="btn btn-sm btn-outline" style="padding:5px 12px;font-size:0.78rem;" target="_blank">
+                                <i class="bi bi-printer me-1"></i>Print
+                            </a>
+                            @if(($contract->status === 'approved' || $contract->status === 'partially_signed') && !$contract->driver_signed_at)
+                                <a href="{{ route('contracts.upload.form', $loan) }}" class="btn btn-sm" style="background:var(--emerald-600,#059669);color:#fff;padding:5px 12px;font-size:0.78rem;font-weight:600;">
+                                    <i class="bi bi-upload me-1"></i>Sign
+                                </a>
+                            @endif
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="mt-3">{{ $loans->links() }}</div>
+@else
+<div class="card border-0 shadow-sm text-center py-5">
+    <i class="bi bi-file-earmark-text display-4 text-muted"></i>
+    <h5 class="mt-3">No Contracts Yet</h5>
+    <p class="text-muted">Contracts will appear here once an owner accepts your application.</p>
+</div>
+@endif
+@endsection

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" fill="none">
+  <!-- Wheel back -->
+  <circle cx="18" cy="44" r="11" stroke="currentColor" stroke-width="3" fill="none"/>
+  <circle cx="18" cy="44" r="3" fill="currentColor"/>
+  <!-- Wheel front -->
+  <circle cx="48" cy="44" r="11" stroke="currentColor" stroke-width="3" fill="none"/>
+  <circle cx="48" cy="44" r="3" fill="currentColor"/>
+  <!-- Body -->
+  <path d="M8 34h20l4-8h8l8 8h6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Seat -->
+  <path d="M16 28c0-4 4-6 8-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Handlebars -->
+  <path d="M46 26c2-1 5-1 7-2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Headlight -->
+  <circle cx="55" cy="38" r="2.5" fill="currentColor"/>
+  <!-- Engine detail -->
+  <rect x="22" y="30" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+</svg>

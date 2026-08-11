@@ -1,0 +1,26 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('payments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('loan_id')->constrained()->onDelete('cascade');
+            $table->decimal('amount', 12, 2);
+            $table->date('payment_date');
+            $table->enum('method', ['cash', 'mpesa', 'bank'])->default('cash');
+            $table->enum('status', ['verified', 'pending', 'rejected'])->default('verified');
+            $table->text('notes')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('payments');
+    }
+};

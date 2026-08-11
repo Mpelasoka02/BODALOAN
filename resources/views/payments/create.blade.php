@@ -1,0 +1,99 @@
+@extends('layouts.app')
+@section('title', 'Record Payment')
+@section('page-title', 'Record Payment')
+
+@section('content')
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb" style="background:none;padding:0;margin:0;font-size:0.82rem;">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" style="color:var(--text-secondary);text-decoration:none;">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('payments.index') }}" style="color:var(--text-secondary);text-decoration:none;">Payments</a></li>
+        <li class="breadcrumb-item active" style="color:var(--text);">Record</li>
+    </ol>
+</nav>
+
+<div class="card">
+    <div class="card-header">
+        <strong style="font-size:0.85rem;"><i class="bi bi-credit-card-2-front me-2" style="color:var(--gold-500);"></i>Submit Payment</strong>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ route('payments.store') }}" enctype="multipart/form-data">
+            @csrf
+
+            @if(auth()->user()->isDriver())
+                <input type="hidden" name="loan_id" value="{{ $loan->id }}">
+                <div class="alert-banner blue mb-4">
+                    <div>
+                        <p class="mb-1"><strong>Motorcycle:</strong> {{ $loan->motorcycle->plate_number ?? '-' }}</p>
+                        <p class="mb-1"><strong>Weekly Installment:</strong> TZS {{ number_format($loan->weekly_installment) }}</p>
+                        <p class="mb-0"><strong>Outstanding Balance:</strong> TZS {{ number_format($loan->balance) }}</p>
+                    </div>
+                </div>
+            @else
+                <div class="mb-3">
+                    <label class="form-label">Loan <span class="text-danger">*</span></label>
+                    <select name="loan_id" class="form-select" required>
+                        <option value="">Select driver's active loan</option>
+                        @foreach($loans as $l)
+                            <option value="{{ $l->id }}" {{ old('loan_id', $selectedLoanId ?? '') == $l->id ? 'selected' : '' }}>
+                                {{ $l->motorcycle->plate_number ?? '-' }} — {{ $l->driver->name ?? '-' }} (TZS {{ number_format($l->balance) }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Amount (TZS) <span class="text-danger">*</span></label>
+                    <input type="number" name="amount" class="form-control" value="{{ old('amount', isset($loan) ? (int)$loan->weekly_installment : '') }}" required min="1">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Payment Date <span class="text-danger">*</span></label>
+                    <input type="date" name="payment_date" class="form-control" value="{{ old('payment_date', date('Y-m-d')) }}" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Payment Method <span class="text-danger">*</span></label>
+                    <select name="method" class="form-select" required>
+                        <option value="">Select method</option>
+                        <option value="cash" {{ old('method') == 'cash' ? 'selected' : '' }}>Cash</option>
+                        <option value="mpesa" {{ old('method') == 'mpesa' ? 'selected' : '' }}>M-Pesa</option>
+                        <option value="tigo_pesa" {{ old('method') == 'tigo_pesa' ? 'selected' : '' }}>Tigo Pesa</option>
+                        <option value="airmoney" {{ old('method') == 'airmoney' ? 'selected' : '' }}>Airtel Money</option>
+                        <option value="halopesa" {{ old('method') == 'halopesa' ? 'selected' : '' }}>HaloPesa</option>
+                        <option value="bank" {{ old('method') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Reference Number</label>
+                    <input type="text" name="reference_number" class="form-control" placeholder="Transaction ID / receipt number..." value="{{ old('reference_number') }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Payment Receipt / Risit <span class="text-danger">*</span></label>
+                    <input type="file" name="receipt" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                    <small class="form-text">Upload a photo or PDF of your payment receipt. This will be reviewed by admin before your payment is confirmed.</small>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Notes</label>
+                <textarea name="notes" class="form-control" rows="2" placeholder="Additional notes...">{{ old('notes') }}</textarea>
+            </div>
+
+            <div class="alert-banner blue mb-4">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-info-circle" style="color:var(--status-assigned-text);"></i>
+                    <span>Payments are subject to verification before being applied to your loan balance.</span>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-gold"><i class="bi bi-send me-1"></i>Submit Payment</button>
+                <a href="{{ route('payments.index') }}" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
