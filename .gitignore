@@ -21,3 +21,8 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Allow deployment configuration files
+!Procfile
+!railway.json
+!.railway/

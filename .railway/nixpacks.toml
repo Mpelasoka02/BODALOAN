@@ -1,0 +1,5 @@
+[build]
+phases.setuptools.cmds = ["apt-get update", "apt-get install -y postgresql-client"]
+
+[start]
+cmd = "php artisan migrate --force && vendor/bin/heroku-php-apache2 public/"
