@@ -1,5 +1,16 @@
 [build]
-phases.setuptools.cmds = ["apt-get update", "apt-get install -y postgresql-client"]
+phases.setuptools.cmds = ["apt-get update", "apt-get install -y postgresql-client libpq-dev"]
+
+[phases.composer_install]
+cmds = ["composer install --no-dev --no-interaction --no-progress --optimize-autoloader"]
+
+[phases.prepare_app]
+cmds = [
+  "mkdir -p storage/framework/{cache,sessions,views} storage/logs",
+  "chmod -R 775 storage bootstrap/cache"
+]
 
 [start]
-cmd = "php artisan migrate --force && vendor/bin/heroku-php-apache2 public/"
+cmd = "chmod +x .railway/deploy.sh && .railway/deploy.sh && vendor/bin/heroku-php-apache2 public/"
+
+
