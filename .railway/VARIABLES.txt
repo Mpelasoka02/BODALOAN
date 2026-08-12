@@ -1,0 +1,15 @@
+APP_NAME|BodaLoan
+APP_ENV|production
+APP_DEBUG|false
+APP_KEY|base64:nUCKVU3DrmN1AYOgojq10UV6ojSFti6g5X648d7Qp/k=
+APP_TIMEZONE|Africa/Dar_es_Salaam
+APP_URL|https://bodaloan-production.up.railway.app
+DB_CONNECTION|pgsql
+DB_HOST|${{PGHOST}}
+DB_PORT|${{PGPORT}}
+DB_DATABASE|${{PGDATABASE}}
+DB_USERNAME|${{PGUSER}}
+DB_PASSWORD|${{PGPASSWORD}}
+LOG_LEVEL|notice
+SESSION_DRIVER|file
+CACHE_STORE|file
